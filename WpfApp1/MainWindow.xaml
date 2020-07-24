@@ -10,6 +10,8 @@
         <Label Content="Url" HorizontalAlignment="Left" Margin="35,114,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="urlText" HorizontalAlignment="Left" Margin="88,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="295" RenderTransformOrigin="-0.281,-0.129" Height="19"/>
         <Button x:Name="btn" Content="Button" HorizontalAlignment="Left" Margin="507,114,0,0" VerticalAlignment="Top" Click="Button_ClickAsync" RenderTransformOrigin="3.859,0.467"/>
+        <ProgressBar x:Name="bar" HorizontalAlignment="Left" Height="10" Margin="120,217,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label x:Name="jindu" Content="0%" HorizontalAlignment="Left" Margin="236,0,0,0" VerticalAlignment="Center"/>
 
 
     </Grid>

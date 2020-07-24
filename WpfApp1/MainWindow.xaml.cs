@@ -38,35 +38,37 @@ namespace WpfApp1
 
             if (!string.IsNullOrWhiteSpace(url)) 
             {
-                var reData = await Http(url, "get", "");
 
-                var dirList = await GetDirList(reData);
+                await DownloadFile(url, "D:/" +Path.GetFileName(url));
+                //var reData = await Http(url, "get", "");
 
-
-                foreach (var items in dirList)
-                {
-                    string dirPath = Path.Combine("D:/qianfeng/", items.Value);
-                    if (!Directory.Exists(dirPath))
-                    {
-                        DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
-                        directoryInfo.Create();
-                    }
-
-                    var videoUrl = "http://" + new Uri(url).Host + items.Key;
-
-                    var videoData = await Http(videoUrl, "get", "");
-
-                    var downloadUrlList = await GetUrl(videoData);
+                //var dirList = await GetDirList(reData);
 
 
+                //foreach (var items in dirList)
+                //{
+                //    string dirPath = Path.Combine("D:/qianfeng/", items.Value);
+                //    if (!Directory.Exists(dirPath))
+                //    {
+                //        DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
+                //        directoryInfo.Create();
+                //    }
 
-                    foreach (var item in downloadUrlList)
-                    {
+                //    var videoUrl = "http://" + new Uri(url).Host + items.Key;
 
-                        //await DownloadFile(item, "D:/"+ + Path.GetFileName(item));
+                //    var videoData = await Http(videoUrl, "get", "");
 
-                    }
-                }
+                //    var downloadUrlList = await GetUrl(videoData);
+
+
+
+                //    foreach (var item in downloadUrlList)
+                //    {
+
+                //        await DownloadFile(item, "D:/" + items.Value +Path.GetFileName(item));
+
+                //    }
+                //}
 
             }
             else
@@ -171,7 +173,10 @@ namespace WpfApp1
         public async Task  DownloadFile(string serverFilePath, string targetPath)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverFilePath);
+            
             WebResponse respone = request.GetResponse();
+            var size = respone.ContentLength;
+            long taotal = 0;
             Stream netStream = respone.GetResponseStream();
             using (Stream fileStream = new FileStream(targetPath, FileMode.Create))
             {
@@ -179,6 +184,10 @@ namespace WpfApp1
                 int realReadLen = netStream.Read(read, 0, read.Length);
                 while (realReadLen > 0)
                 {
+                    taotal += realReadLen;
+                    var jindu1 = taotal / size * 100;
+                    bar.Value = jindu1;
+                    jindu.Content = jindu1+"%";
                     fileStream.Write(read, 0, realReadLen);
                     realReadLen = await netStream.ReadAsync(read, 0, read.Length);
                 }
