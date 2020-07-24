@@ -33,42 +33,45 @@ namespace WpfApp1
             
 
             btn.IsEnabled = true;
+            //千峰视频页地址
             var url = urlText.Text;
 
 
             if (!string.IsNullOrWhiteSpace(url)) 
             {
 
-                await DownloadFile(url, "D:/" +Path.GetFileName(url));
-                //var reData = await Http(url, "get", "");
+                //await DownloadFile(url, "D:/" +Path.GetFileName(url));
+                var reData = await Http(url, "get", "");
 
-                //var dirList = await GetDirList(reData);
-
-
-                //foreach (var items in dirList)
-                //{
-                //    string dirPath = Path.Combine("D:/qianfeng/", items.Value);
-                //    if (!Directory.Exists(dirPath))
-                //    {
-                //        DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
-                //        directoryInfo.Create();
-                //    }
-
-                //    var videoUrl = "http://" + new Uri(url).Host + items.Key;
-
-                //    var videoData = await Http(videoUrl, "get", "");
-
-                //    var downloadUrlList = await GetUrl(videoData);
+                var dirList = await GetDirList(reData);
 
 
+                foreach (var items in dirList)
+                {
+                    string dirPath = Path.Combine("D:/qianfeng/", items.Value);
+                    if (!Directory.Exists(dirPath))
+                    {
+                        DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
+                        directoryInfo.Create();
+                    }
 
-                //    foreach (var item in downloadUrlList)
-                //    {
+                    var videoUrl = "http://" + new Uri(url).Host + items.Key;
 
-                //        await DownloadFile(item, "D:/" + items.Value +Path.GetFileName(item));
+                    var videoData = await Http(videoUrl, "get", "");
 
-                //    }
-                //}
+                    var downloadUrlList = await GetUrl(videoData);
+
+
+
+                    foreach (var item in downloadUrlList)
+                    {
+
+                        //该行取消注释后，可下载
+
+                        //await DownloadFile(item, "D:/" + items.Value + Path.GetFileName(item));
+
+                    }
+                }
 
             }
             else
